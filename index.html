@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Title Page</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="leaflet/leaflet.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="leaflet/leaflet.fullscreen.css" crossorigin="anonymous">
+	<script src="//code.jquery.com/jquery.js"></script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+			<![endif]-->
+</head>
+<body>
+
+
+
+	<div style="height: 800px; width:800px;"><div style="height:100%; width:100%" id="map"></div></div>
+	<!-- jQuery -->
+
+	<script src="leaflet/leaflet.js"></script>
+	<script src="leaflet/leaflet.fullscreen.js"></script>
+	<script src="leaflet/leaflet.elevator.js"></script>
+	<!-- Bootstrap JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="Hello World"></script>
+</body>
+</html>
+<script type="application/javascript">
+
+				var map;
+
+
+				$(document).ready(function () {
+					map = L.map('map', {	
+						fullscreenControl: true,
+						zoomSnap: 0,
+						crs: L.CRS.Simple //Set a flat projection, as we are projecting an image
+					}).setView([0, 0], 0);
+
+					var layer = L.tileLayer.elevator(function(coords, tile, done) {
+						var error;
+
+						var params = {Bucket: 'elevator-assets', Key: "testasset/tiledBase_files/" + coords.z + "/" + coords.x + "_" + coords.y + ".jpeg"};
+						tile.onload = (function(done, error, tile) {
+							return function() {
+								done(error, tile);
+							}
+						})(done, error, tile);
+						tile.src = "http://s3.amazonaws.com/" + params.Bucket + "/" + params.Key;
+						return tile;
+					}, {
+						width: 44568,
+						height: 35292,
+						tileSize :254,
+						maxZoom: 17 - 1,
+						overlap: 1
+					});
+					layer.addTo(map);
+
+				});
+
+
+			</script>
